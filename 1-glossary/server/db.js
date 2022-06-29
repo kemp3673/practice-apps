@@ -15,6 +15,7 @@ const Glossary = mongoose.model('Glossary', glossarySchema);
 
 // Functions
 
+
 let addOrUpdate = (data) => {
     return Glossary.findOneAndUpdate(
       {word: data.word},
@@ -30,18 +31,19 @@ let remove = (query) => {
 }
 let getOne = (word) => {
   return Glossary.find({word: word})
-    .then(() => {console.log('\x1b[33m%s\x1b[0m', 'ONE FOUND')});
+    .exec();
 }
 let getAll = () => {
   return Glossary.find({})
-    .then(() => {console.log('\x1b[33m%s\x1b[0m', 'QUERY ALL')});
+    .limit(10)
+    .exec();
 }
 
 // console.log(addOrUpdate({word: "potato", definition: "Edible root thing that Hobbits like"}));
 // console.log(getAll({word: "potato", definition: "Edible root thing that Hobbits like"}));
 //console.log(remove({word: "potato", definition: "Edible root thing that Hobbits like"}));
 
-module.exports = {addOrUpdate, remove, getAll};
+module.exports = {addOrUpdate, remove, getAll, getOne};
 
 
 // 1. Use mongoose to establish a connection to MongoDB

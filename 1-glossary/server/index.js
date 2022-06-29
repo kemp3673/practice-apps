@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const path = require("path");
 const app = express();
-const { addOrUpdate, remove, getAll } = require("./db.js");
+const { addOrUpdate, remove, getAll, getOne} = require("./db.js");
 
 // Serves up all static and generated assets in ../client/dist.
 app.use(express.static(path.join(__dirname, "../client/dist")));
@@ -10,10 +10,10 @@ app.use(express.static(path.join(__dirname, "../client/dist")));
 app.use(express.json());
 
 app.get("/glossary", (req, res) => {
-  console.log(req.body.word);
   if (req.body.word === undefined) {
     getAll()
       .then(function(response) {
+        res.status(200);
         return res.json(response);
       })
       .catch(function(err) {
@@ -25,7 +25,7 @@ app.get("/glossary", (req, res) => {
         return res.json(response);
       })
       .catch(function (err) {
-        return (res.status(500).json({ message: "SERVER BROKE @ GET ONE" }));
+        return (res.status(500).json({ message: "SERVER BROKE @ GET ADD ONE" }));
       });
   }
 });
