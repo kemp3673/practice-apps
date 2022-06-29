@@ -22,6 +22,7 @@ app.get("/glossary", (req, res) => {
   } else {
     getOne(req.body.word)
       .then(function (response) {
+        res.status(200);
         return res.json(response);
       })
       .catch(function (err) {
@@ -37,6 +38,13 @@ app.post("/glossary", (req, res) => {
     })
     .catch(function(err) {
       return (res.status(500).json({message: "SERVER BROKE @ POST"}));
+    })
+})
+
+app.delete("/glossary", (req, res) => {
+  remove(req.body.word)
+    .then(function() {
+      res.sendStatus(200);
     })
 })
 

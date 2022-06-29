@@ -26,11 +26,12 @@ let addOrUpdate = (data) => {
 }
 
 let remove = (query) => {
-  return Glossary.deleteOne({word: query.word})
-    .then(() => {console.log('\x1b[33m%s\x1b[0m', 'DELETED')});
+  console.log(query);
+  return Glossary.deleteOne({word: query})
+    .exec();
 }
-let getOne = (word) => {
-  return Glossary.find({word: word})
+let getOne = (query) => {
+  return Glossary.find({word: query})
     .exec();
 }
 let getAll = () => {
