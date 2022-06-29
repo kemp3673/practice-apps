@@ -1,15 +1,20 @@
-require("dotenv").config();
+/* === External ===*/
 const express = require("express");
+
+/* === Middleware === */
 const path = require("path");
 const app = express();
 const { addOrUpdate, remove, getAll, getOne} = require("./db.js");
+
+/* === System Variables === */
+require("dotenv").config();
 
 // Serves up all static and generated assets in ../client/dist.
 app.use(express.static(path.join(__dirname, "../client/dist")));
 
 app.use(express.json());
 
-app.get("/glossary", (req, res) => {
+app.get("/glossary", (req, res) => {   // GO AND CHANGE ONE AND ALL TO BE TOGETHER
   if (req.body.word === undefined) {
     getAll()
       .then(function(response) {
@@ -41,6 +46,16 @@ app.post("/glossary", (req, res) => {
     })
 })
 
+app.put("/glossary", (req, res) => {
+  addOrUpdate(req.body)
+    .then(function() {
+      res.sendStatus(201);
+    })
+    .catch(function(err) {
+      return (res.status(500).json({message: "SERVER BROKE @ POST"}));
+    })
+})
+
 app.delete("/glossary", (req, res) => {
   remove(req.body.word)
     .then(function() {
@@ -48,14 +63,6 @@ app.delete("/glossary", (req, res) => {
     })
 })
 
-
-/****
- *
- *
- * Other routes here....
- *
- *
- */
 
 app.listen(process.env.PORT);
 console.log(`Listening at http://localhost:${process.env.PORT}`);
