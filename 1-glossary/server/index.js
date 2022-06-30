@@ -13,8 +13,9 @@ require("dotenv").config();
 app.use(express.json());  // THIS IS BODY PARSER
 app.use(express.static(path.join(__dirname, "../client/dist")));
 
-app.get("/glossary", (req, res) => {   // GO AND CHANGE ONE AND ALL TO BE TOGETHER
-  if (req.body.word === undefined) {
+app.get("/glossary/:word", (req, res) => {   // GO AND CHANGE ONE AND ALL TO BE TOGETHER
+  console.log(`Inside Server GET: ${req.params.word}`)
+  if (req.params.word === 'undefined') {
     getAll()
       .then(function(response) {
         res.status(200);
@@ -24,7 +25,7 @@ app.get("/glossary", (req, res) => {   // GO AND CHANGE ONE AND ALL TO BE TOGETH
         res.status(500).send(err);
       });
   } else {
-    getOne(req.body.word)
+    getOne(req.params.word)
       .then(function (response) {
         res.status(200);
         return res.json(response);

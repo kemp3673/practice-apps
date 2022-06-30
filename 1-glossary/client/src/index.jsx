@@ -20,7 +20,7 @@ class App extends React.Component {
 
   //didmount
   componentDidMount() {
-    this.handleQuery();
+    this.handleQuery('undefined');
   }
 
   // Add/Update input handler
@@ -37,7 +37,12 @@ class App extends React.Component {
 
   //GET
   handleQuery = (query) => {
-    axios.get("/glossary", {data: {word: query}})
+    if (this.state.newWord === '') {
+      query = 'undefined';
+    } else {
+      query = this.state.newWord;
+    }
+    axios.get(`/glossary/${query}`)
       .then(res => {
         this.setState({
           dict: res.data
@@ -54,6 +59,10 @@ class App extends React.Component {
     newDefinition = this.state.newDef;
     axios.post("/glossary", {word: newWord, definition: newDefinition})
       .then(res => {
+        this.setState({
+          newWord: '',
+          newDef: ''
+        });
       })
       .catch(err => {
         console.log(err);
@@ -86,9 +95,9 @@ class App extends React.Component {
       <div>
         <img src="https://www.nicepng.com/png/detail/340-3404228_book-book-bfdi-pose.png"/>
         <h1>The Not So Complete Dictionary</h1>
-        <Add words={this.state.dict} onClick={this.handleAdd} newWord = {this.handleWordInput} newDef = {this.handleDefInput}/>
+        <Add onClick={this.handleAdd} newWord = {this.handleWordInput} newDef = {this.handleDefInput}/>
+        <Filter words={this.state.dict} newWord = {this.handleWordInput} handleQuery={this.handleQuery}/>
         <WordList class="list" words={this.state.dict} delete={this.handleDelete} update={this.handleUpdate}/>
-        {/* <Filter words={this.state.dict} onClick={this.handleQuery}/> */}
       </div>
     )
   }

@@ -35,6 +35,7 @@ let remove = (query) => {
 
 // GET - One
 let getOne = (query) => {
+  console.log(`Get One - ${query}`)
   return Glossary.find({word: query})
     .exec();
 }
