@@ -36,13 +36,14 @@ class App extends React.Component {
     this.setState({newDef: input});
   }
   handleWordUpdateInput = (e, word) => {
+    console.log(e, word.word);
     let input = e;
     this.setState({updateWord: input, ogWord: word.word});
   }
-  handleDefUpdateInput = (e) => {
-    console.log(e);
+  handleDefUpdateInput = (e, word) => {
+    console.log(e, word.word);
     let input = e;
-    this.setState({updateDef: input});
+    this.setState({updateDef: input, ogWord: word.word});
   }
   // wordUpdating = (e) => {
   //   console.log(e);
@@ -89,6 +90,7 @@ class App extends React.Component {
 
   //UPDATE
   handleUpdate = (filter, word, definition) => {
+    console.log('inside');
     filter = this.state.ogWord;
     word = this.state.updateWord || this.state.ogWord;
     console.log(filter, word)

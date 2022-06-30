@@ -77,6 +77,10 @@ input {
   margin-top: 10px;
 }
 
+input:hover {
+  background-color: whitesmoke;
+}
+
 div {
   background-color: whitesmoke;
   margin: 25px;

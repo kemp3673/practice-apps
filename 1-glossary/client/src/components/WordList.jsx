@@ -9,7 +9,7 @@ const WordList = (props) => {
           <b>{word.word}</b>: {word.definition}&nbsp;
           <br></br>
           <input type="text" placeholder="Edit Word" onChange = {(e) => props.updateWord(e.target.value, word)}/>&nbsp;
-      <input type="text" placeholder="Edit Definition" onChange = {(e) => props.updateDef(e.target.value)}/>&nbsp;
+      <input type="text" placeholder="Edit Definition" onChange = {(e) => props.updateDef(e.target.value, word)}/>&nbsp;
       <input type="button" value="Edit" className="button" onClick={() => props.handleUpdate()}/>&nbsp;
         </li>
       ))}
