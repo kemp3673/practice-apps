@@ -10,10 +10,8 @@ const { addOrUpdate, remove, getAll, getOne} = require("./db.js");
 require("dotenv").config();
 
 // Serves up all static and generated assets in ../client/dist.
-app.use(express.json());
+app.use(express.json());  // THIS IS BODY PARSER
 app.use(express.static(path.join(__dirname, "../client/dist")));
-
-
 
 app.get("/glossary", (req, res) => {   // GO AND CHANGE ONE AND ALL TO BE TOGETHER
   if (req.body.word === undefined) {
@@ -23,7 +21,7 @@ app.get("/glossary", (req, res) => {   // GO AND CHANGE ONE AND ALL TO BE TOGETH
         return res.json(response);
       })
       .catch(function(err) {
-        return (res.status(500).json({message: "SERVER BROKE @ GET ALL"}))
+        res.status(500).send(err);
       });
   } else {
     getOne(req.body.word)
@@ -32,7 +30,7 @@ app.get("/glossary", (req, res) => {   // GO AND CHANGE ONE AND ALL TO BE TOGETH
         return res.json(response);
       })
       .catch(function (err) {
-        return (res.status(500).json({ message: "SERVER BROKE @ GET ADD ONE" }));
+        res.status(500).send(err);
       });
   }
 });
@@ -43,26 +41,28 @@ app.post("/glossary", (req, res) => {
       res.sendStatus(201);
     })
     .catch(function(err) {
-      return (res.status(500).json({message: "SERVER BROKE @ POST"}));
-    })
+      res.status(500).send(err);
+    });
 })
 
 app.put("/glossary", (req, res) => {
   addOrUpdate(req.body)
-    .then(function() {
+    .then(() => {
       res.sendStatus(201);
     })
     .catch(function(err) {
-      return (res.status(500).json({message: "SERVER BROKE @ POST"}));
-    })
+      res.status(500).send(err);
+    });
 })
 
 app.delete("/glossary", (req, res) => {
-  console.log('here', req.body);
   remove(req.body.word)
-    .then(function() {
+    .then(() => {
       res.sendStatus(200);
     })
+    .catch(err => {
+      res.status(500).send(err);
+    });
 })
 
 

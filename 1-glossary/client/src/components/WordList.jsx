@@ -1,12 +1,11 @@
 import React from "react";
 
 const WordList = (props) => {
-
   return (
     <div>
       {props.words.map((word, index) => (
         <li key={index}>
-          <input type="button" value="Edit" onClick={() => props.updateForm()}/>&nbsp;
+          <input type="button" value="Edit" onClick={(e) => props.updateForm(e)}/>&nbsp;
           <input type="button" value="Delete" onClick={() => props.delete(word.word)}/>&nbsp;
           <b>{word.word}</b>: {word.definition}
         </li>

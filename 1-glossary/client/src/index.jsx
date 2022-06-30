@@ -13,6 +13,8 @@ class App extends React.Component {
     this.state = {
       edit: false,
       dict: [],
+      newWord: '',
+      newDef: '',
     };
   }
 
@@ -21,9 +23,21 @@ class App extends React.Component {
     this.handleQuery();
   }
 
+  // Add/Update input handler
+  handleWordInput = (e) => {
+    console.log(e);
+    let input = e;
+    this.setState({newWord: input});
+  }
+  handleDefInput = (e) => {
+    console.log(e);
+    let input = e;
+    this.setState({newDef: input});
+  }
+
   //GET
   handleQuery = (query) => {
-    axios.get("/glossary", {word: query})
+    axios.get("/glossary", {data: {word: query}})
       .then(res => {
         this.setState({
           dict: res.data
@@ -36,11 +50,13 @@ class App extends React.Component {
 
   //POST
   handleAdd = (newWord, newDefinition) => {
-    axios.get("/glossary", {word: newWord, definition: newDefinition})
+    newWord = this.state.newWord;
+    newDefinition = this.state.newDef;
+    axios.post("/glossary", {word: newWord, definition: newDefinition})
       .then(res => {
-        this.setState({
-          dict: res.data
-        });
+      })
+      .catch(err => {
+        console.log(err);
       });
   }
 
@@ -54,13 +70,15 @@ class App extends React.Component {
 
   //DELETE
   handleDelete = (toDelete) => {
-    axios.delete("/glossary", {word: toDelete}, {headers: {'Content-Type': 'application/json'}
- })
+    axios.delete("/glossary", {data: {word: toDelete}})
     .then(res => {
-      console.log(`DELETED ${toDelete}`)
     })
+    .catch(err => {
+      console.log(err);
+    });
   }
 
+    // Should be a body-parsing issue. Have express.json as middleware on server side. Tried manually setting header to content-type: application/json.
 
 
   render() {
@@ -68,7 +86,7 @@ class App extends React.Component {
       <div>
         <img src="https://www.nicepng.com/png/detail/340-3404228_book-book-bfdi-pose.png"/>
         <h1>The Not So Complete Dictionary</h1>
-        <Add words={this.state.dict} onClick={this.handleAdd}/>
+        <Add words={this.state.dict} onClick={this.handleAdd} newWord = {this.handleWordInput} newDef = {this.handleDefInput}/>
         <WordList class="list" words={this.state.dict} delete={this.handleDelete} update={this.handleUpdate}/>
         {/* <Filter words={this.state.dict} onClick={this.handleQuery}/> */}
       </div>

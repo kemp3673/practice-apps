@@ -15,8 +15,9 @@ const Glossary = mongoose.model('Glossary', glossarySchema);
 
 // Functions
 
-
+// POST
 let addOrUpdate = (data) => {
+    console.log('DATA @ DB: ', data)
     return Glossary.findOneAndUpdate(
       {word: data.word},
       {...data},
@@ -25,28 +26,24 @@ let addOrUpdate = (data) => {
     .then(() => {console.log('\x1b[33m%s\x1b[0m', 'ENTRY CREATED')});
 }
 
+// DELETE
 let remove = (query) => {
+  console.log(`Inner Remove-DB: ${query}`)
   return Glossary.deleteOne({word: query})
     .exec();
 }
+
+// GET - One
 let getOne = (query) => {
   return Glossary.find({word: query})
     .exec();
 }
+// GET - All
 let getAll = () => {
+  console.log('Inside DB GET')
   return Glossary.find({})
     .limit(10)
     .exec();
 }
 
-// console.log(addOrUpdate({word: "potato", definition: "Edible root thing that Hobbits like"}));
-// console.log(getAll({word: "potato", definition: "Edible root thing that Hobbits like"}));
-//console.log(remove({word: "potato", definition: "Edible root thing that Hobbits like"}));
-
 module.exports = {addOrUpdate, remove, getAll, getOne};
-
-
-// 1. Use mongoose to establish a connection to MongoDB
-// 2. Set up any schema and models needed by the app
-// 3. Export the models
-// 4. Import the models into any modules that need them
