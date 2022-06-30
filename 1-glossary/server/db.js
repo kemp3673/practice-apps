@@ -23,28 +23,32 @@ let addOrUpdate = (data) => {
       {...data},
       {upsert: true}
       )
-    .then(() => {console.log('\x1b[33m%s\x1b[0m', 'ENTRY CREATED')});
+    .exec();
+}
+
+//PUT
+let updateEntry = (data) => {
+  console.log('inside PUT - DB', data)
+  return Glossary.updateOne({word: data.filter}, {word: data.word, definition: data.definition})
+    .exec();
 }
 
 // DELETE
 let remove = (query) => {
-  console.log(`Inner Remove-DB: ${query}`)
   return Glossary.deleteOne({word: query})
     .exec();
 }
 
 // GET - One
 let getOne = (query) => {
-  console.log(`Get One - ${query}`)
   return Glossary.find({word: query})
     .exec();
 }
 // GET - All
 let getAll = () => {
-  console.log('Inside DB GET')
   return Glossary.find({})
     .limit(10)
     .exec();
 }
 
-module.exports = {addOrUpdate, remove, getAll, getOne};
+module.exports = {addOrUpdate, remove, getAll, getOne, updateEntry};

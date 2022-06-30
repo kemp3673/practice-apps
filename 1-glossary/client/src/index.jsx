@@ -15,6 +15,9 @@ class App extends React.Component {
       dict: [],
       newWord: '',
       newDef: '',
+      updateWord: '',
+      updateDef: '',
+      ogWord: '',
     };
   }
 
@@ -25,15 +28,30 @@ class App extends React.Component {
 
   // Add/Update input handler
   handleWordInput = (e) => {
-    console.log(e);
     let input = e;
     this.setState({newWord: input});
   }
   handleDefInput = (e) => {
-    console.log(e);
     let input = e;
     this.setState({newDef: input});
   }
+  handleWordUpdateInput = (e, word) => {
+    let input = e;
+    this.setState({updateWord: input, ogWord: word.word});
+  }
+  handleDefUpdateInput = (e) => {
+    console.log(e);
+    let input = e;
+    this.setState({updateDef: input});
+  }
+  // wordUpdating = (e) => {
+  //   console.log(e);
+  //   let input = e;
+  //   this.setState({ogWord: input});
+  // }
+
+
+
 
   //GET
   handleQuery = (query) => {
@@ -70,11 +88,18 @@ class App extends React.Component {
   }
 
   //UPDATE
-  handleUpdate = (toUpdate, UpdatedDefinition) => {
-    // axios.put("/glossary", {word: toUpdate, definition: UpdatedDefinition})
-    //   .then(res => {
-    //     this.handleQuery();
-    //   });
+  handleUpdate = (filter, word, definition) => {
+    filter = this.state.ogWord;
+    word = this.state.updateWord || this.state.ogWord;
+    console.log(filter, word)
+    definition = this.state.updateDef || this.state.dict[this.state.dict.indexOf(this.state.dict[filter])];
+    axios.put("/glossary", {filter: filter, word: word, definition: definition})
+      .then(() => {
+        this.handleQuery(word);
+      })
+      .catch(err => {
+        console.log(err);
+      })
   }
 
   //DELETE
@@ -95,9 +120,11 @@ class App extends React.Component {
       <div>
         <img src="https://www.nicepng.com/png/detail/340-3404228_book-book-bfdi-pose.png"/>
         <h1>The Not So Complete Dictionary</h1>
+        <br></br>
         <Add onClick={this.handleAdd} newWord = {this.handleWordInput} newDef = {this.handleDefInput}/>
+        {/* <Update handleUpdate={this.handleUpdate} updateWord = {this.handleWordUpdateInput} updateDef = {this.handleDefUpdateInput} wordUpdating = {this.wordUpdating}/> */}
         <Filter words={this.state.dict} newWord = {this.handleWordInput} handleQuery={this.handleQuery}/>
-        <WordList class="list" words={this.state.dict} delete={this.handleDelete} update={this.handleUpdate}/>
+        <WordList class="list" words={this.state.dict} delete={this.handleDelete} handleUpdate={this.handleUpdate} updateWord = {this.handleWordUpdateInput} updateDef = {this.handleDefUpdateInput} wordUpdating = {this.wordUpdating}/>
       </div>
     )
   }

@@ -4,7 +4,7 @@ const express = require("express");
 /* === Middleware === */
 const path = require("path");
 const app = express();
-const { addOrUpdate, remove, getAll, getOne} = require("./db.js");
+const { addOrUpdate, remove, getAll, getOne, updateEntry} = require("./db.js");
 
 /* === System Variables === */
 require("dotenv").config();
@@ -13,12 +13,11 @@ require("dotenv").config();
 app.use(express.json());  // THIS IS BODY PARSER
 app.use(express.static(path.join(__dirname, "../client/dist")));
 
-app.get("/glossary/:word", (req, res) => {   // GO AND CHANGE ONE AND ALL TO BE TOGETHER
-  console.log(`Inside Server GET: ${req.params.word}`)
+app.get("/glossary/:word", (req, res) => {
   if (req.params.word === 'undefined') {
     getAll()
       .then(function(response) {
-        res.status(200);
+        res.json;
         return res.json(response);
       })
       .catch(function(err) {
@@ -27,7 +26,7 @@ app.get("/glossary/:word", (req, res) => {   // GO AND CHANGE ONE AND ALL TO BE 
   } else {
     getOne(req.params.word)
       .then(function (response) {
-        res.status(200);
+        res.json;
         return res.json(response);
       })
       .catch(function (err) {
@@ -39,7 +38,7 @@ app.get("/glossary/:word", (req, res) => {   // GO AND CHANGE ONE AND ALL TO BE 
 app.post("/glossary", (req, res) => {
   addOrUpdate(req.body)
     .then(function() {
-      res.sendStatus(201);
+      res.json;
     })
     .catch(function(err) {
       res.status(500).send(err);
@@ -47,9 +46,9 @@ app.post("/glossary", (req, res) => {
 })
 
 app.put("/glossary", (req, res) => {
-  addOrUpdate(req.body)
-    .then(() => {
-      res.sendStatus(201);
+  updateEntry(req.body)
+    .then(function() {
+      res.json;
     })
     .catch(function(err) {
       res.status(500).send(err);
@@ -59,7 +58,7 @@ app.put("/glossary", (req, res) => {
 app.delete("/glossary", (req, res) => {
   remove(req.body.word)
     .then(() => {
-      res.sendStatus(200);
+      res.json;
     })
     .catch(err => {
       res.status(500).send(err);

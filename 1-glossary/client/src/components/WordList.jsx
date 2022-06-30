@@ -4,10 +4,13 @@ const WordList = (props) => {
   return (
     <div>
       {props.words.map((word, index) => (
-        <li key={index}>
-          <input type="button" value="Edit" onClick={(e) => props.updateForm(e)}/>&nbsp;
-          <input type="button" value="Delete" onClick={() => props.delete(word.word)}/>&nbsp;
-          <b>{word.word}</b>: {word.definition}
+        <li key={index} >
+          <input type="button" value="Delete" className="delete" onClick={() => props.delete(word.word)}/>&nbsp;
+          <b>{word.word}</b>: {word.definition}&nbsp;
+          <br></br>
+          <input type="text" placeholder="Edit Word" onChange = {(e) => props.updateWord(e.target.value, word)}/>&nbsp;
+      <input type="text" placeholder="Edit Definition" onChange = {(e) => props.updateDef(e.target.value)}/>&nbsp;
+      <input type="button" value="Edit" className="button" onClick={() => props.handleUpdate()}/>&nbsp;
         </li>
       ))}
     </div>
@@ -16,24 +19,3 @@ const WordList = (props) => {
 };
 
 export default WordList;
-
-{/* <form>
-<input type="text" placholder="Enter Correct Spelling"/>
-<input type="text" placholder="Enter New Definition"/>
-</form> */}
-
-
-
-// const btn = document.getElementById('btn');
-
-// btn.addEventListener('click', () => {
-//   const form = document.getElementById('form');
-
-//   if (form.style.display === 'none') {
-//     // 👇️ this SHOWS the form
-//     form.style.display = 'block';
-//   } else {
-//     // 👇️ this HIDES the form
-//     form.style.display = 'none';
-//   }
-// });
