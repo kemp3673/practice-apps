@@ -26,7 +26,6 @@ let addOrUpdate = (data) => {
 }
 
 let remove = (query) => {
-  console.log(query);
   return Glossary.deleteOne({word: query})
     .exec();
 }

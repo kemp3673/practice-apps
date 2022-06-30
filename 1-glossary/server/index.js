@@ -10,9 +10,10 @@ const { addOrUpdate, remove, getAll, getOne} = require("./db.js");
 require("dotenv").config();
 
 // Serves up all static and generated assets in ../client/dist.
+app.use(express.json());
 app.use(express.static(path.join(__dirname, "../client/dist")));
 
-app.use(express.json());
+
 
 app.get("/glossary", (req, res) => {   // GO AND CHANGE ONE AND ALL TO BE TOGETHER
   if (req.body.word === undefined) {
@@ -57,6 +58,7 @@ app.put("/glossary", (req, res) => {
 })
 
 app.delete("/glossary", (req, res) => {
+  console.log('here', req.body);
   remove(req.body.word)
     .then(function() {
       res.sendStatus(200);

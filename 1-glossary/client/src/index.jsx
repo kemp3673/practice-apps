@@ -5,16 +5,13 @@ import axios from "axios";
 import WordList from "./components/WordList.jsx";
 import Add from "./components/Add.jsx";
 import Filter from "./components/Filter.jsx";
-import Delete from "./components/Delete.jsx";
-import Update from "./components/Update.jsx";
-
 
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      test: 'test',
+      edit: false,
       dict: [],
     };
   }
@@ -31,6 +28,9 @@ class App extends React.Component {
         this.setState({
           dict: res.data
         });
+      })
+      .catch(err => {
+        console.log(err);
       });
   }
 
@@ -46,15 +46,19 @@ class App extends React.Component {
 
   //UPDATE
   handleUpdate = (toUpdate, UpdatedDefinition) => {
-    axios.put("/glossary", {word: toUpdate, definition: UpdatedDefinition})
-      .then(res => {
-        this.handleQuery();
-      });
+    // axios.put("/glossary", {word: toUpdate, definition: UpdatedDefinition})
+    //   .then(res => {
+    //     this.handleQuery();
+    //   });
   }
 
   //DELETE
   handleDelete = (toDelete) => {
-    axios.delete("/glossay", {word: toDelete})
+    axios.delete("/glossary", {word: toDelete}, {headers: {'Content-Type': 'application/json'}
+ })
+    .then(res => {
+      console.log(`DELETED ${toDelete}`)
+    })
   }
 
 
@@ -62,18 +66,11 @@ class App extends React.Component {
   render() {
     return (
       <div>
+        <img src="https://www.nicepng.com/png/detail/340-3404228_book-book-bfdi-pose.png"/>
         <h1>The Not So Complete Dictionary</h1>
-        <form>
-          <input type="text" placeholder="Enter New Word"/>
-          <input type="text" placeholder="Enter definition"/>
-          <input type="button" value="SUBMIT"/>
-        </form>
-        <WordList words={this.state.dict}/>
-        {/* <Add words={this.state.dict} onClick={this.handleAdd}/>
-        <Filter words={this.state.dict} onClick={this.handleQuery}/>
-        <Delete words={this.state.dict} onClick={this.handleDelete}/>
-        <Update words={this.state.dict} onClick={this.handleUpdate}/> */}
-
+        <Add words={this.state.dict} onClick={this.handleAdd}/>
+        <WordList class="list" words={this.state.dict} delete={this.handleDelete} update={this.handleUpdate}/>
+        {/* <Filter words={this.state.dict} onClick={this.handleQuery}/> */}
       </div>
     )
   }
