@@ -97,6 +97,7 @@ img {
 }
 .delete:hover {
   background-color: crimson;
+  cursor: pointer;
 }
 
 .search {
@@ -110,9 +111,11 @@ h1 {
 
 .button:hover {
   background-color: gray;
+  cursor: pointer;
 }
 
 .search:hover {
   background-color: aquamarine;
+  cursor: pointer;
 }
 
