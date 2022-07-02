@@ -3,9 +3,11 @@ const express = require("express");
 const path = require("path");
 const sessionHandler = require("./middleware/session-handler");
 const logger = require("./middleware/logger");
+const Promise = require("bluebird");
 
 // Establishes connection to the database on server start
 const db = require("./db");
+
 
 
 const app = express();
@@ -23,12 +25,30 @@ app.use(express.static(path.join(__dirname, "../client/dist")));
 
 
 // SELECT data from db
-app.get();
+
+
+app.get("/checkout/:name", (req, res) => {
+  db.get(req.params)
+    .then((data) => {
+      res.send(data[0]);
+    })
+    .catch((err) => {
+      res.status(500).send(err)
+  });
+});
 
 
 // INSERT INTO db
-app.post();
-
+app.post("/checkout", (req, res) => {
+  console.log(req.body);
+  db.create(req.body)
+    .then((response) => {
+      res.send(response)
+    })
+    .catch((err) => {
+     res.status(500).send(err)
+  });
+});
 
 
 app.listen(process.env.PORT);
