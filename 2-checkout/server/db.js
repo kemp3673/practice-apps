@@ -16,7 +16,7 @@ db.connectAsync()
   .then(() =>
     // USERS TABLE:
     db.queryAsync(
-      "CREATE TABLE IF NOT EXISTS users (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, street VARCHAR(255), addLine2 VARCHAR(255), city VARCHAR(50), zipcode INT(5), state VARCHAR(2), phone INT(10), session_id INT)")
+      "CREATE TABLE IF NOT EXISTS users (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, street VARCHAR(255), addLine2 VARCHAR(255), city VARCHAR(50), zipcode INT(5), state VARCHAR(2), phone INT(10), session_id VARCHAR(255))")
   )
   .then(() =>
     // PAYMENTS TABLE:
@@ -28,7 +28,6 @@ db.connectAsync()
 
 db.get = async(data) => {
   try {
-      console.log('name: ', data)
       return await db.queryAsync(`SELECT * FROM users LEFT JOIN payments ON users.id = payments.nameID WHERE users.name = "${data.name}"`)
     }
   catch(err) {
@@ -37,7 +36,7 @@ db.get = async(data) => {
 };
 
 
-db.create = async(data) => {
+db.create = async(data, id) => {
   if (data.password) {
     try {
       return db.queryAsync(`INSERT INTO users (name, email, password) SELECT * FROM ( SELECT "${data.name}", "${data.email}", "${data.password}") AS tmp WHERE NOT EXISTS (SELECT name FROM users WHERE name="${data.name}")`)
@@ -51,7 +50,7 @@ db.create = async(data) => {
       if (data.addLine2) {
         addLine2=`"${data.addLine2}"`;
       }
-      return db.queryAsync(`UPDATE users SET street="${data.street}", addLine2=${addLine2}, city="${data.city}", zipcode="${data.zipcode}", state="${data.state}", phone="${data.phone}" WHERE name  = "${data.name}"`)
+      return db.queryAsync(`UPDATE users SET street="${data.street}", addLine2=${addLine2}, city="${data.city}", zipcode="${data.zipcode}", state="${data.state}", phone="${data.phone}", session_id="${id}" WHERE name  = "${data.name}"`)
     }
     catch(err) {
       return err;

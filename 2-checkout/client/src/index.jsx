@@ -13,23 +13,9 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: "",
-      email: "",
       password: "",
-      exist: false,
       street: "",
-      addLine2: "",
-      city: "",
-      zipcode: "",
-      state: "",
-      phone: "",
       card: "",
-      billingZipcode: "",
-      cvv: "",
-      expDate: "",
-
-
-
       userShow: true,
       shippingShow: false,
       paymentShow: false,
@@ -47,25 +33,52 @@ class App extends React.Component {
   }
 
   handleToggle = (event, next) => {
+    if (this.state.state !== "") {
+      this.handleUpdateOrCreate('shipping');
+    } else if (this.state.card !== "") {
+      this.handleUpdateOrCreate('payment');
+    }
     this.setState({[event.target.name]: this.state[event.target.name] = !this.state[event.target.name]});
     this.setState({[next]: !this.state[next]})
   }
 
+  handleUpdateOrCreate = (toPost) => {
+    if (toPost === 'shipping') {
+      toPost = {
+        street: this.state.street,
+        addLine2: this.state.addLine2,
+        city: this.state.city,
+        zipcode: Number(this.state.zipcode),
+        state: this.state.state,
+        phone: Number(this.state.phone)
+      }
+    } else if (toPost === 'payment') {
+      toPost = {
+        card: Number(this.state.card),
+        billZipcode: Number(this.state.billingZipcode),
+        cvv: Number(this.state.cvv),
+        exp_date: this.state.expDate
+      }
+    }
+    axios.post('/checkout', toPost)
+      .catch((err) => {
+        console.log(err);
+      })
+    }
   handleLogin = (event, next) => {
     let query = this.state.name;
+    console.log('login');
     this.handleToggle(event, next);
+    console.log('Post Login');
     axios.get(`/checkout/${query}`)
       .then((res) =>  {
-        console.log(res.data);
+        console.log('res: ', res)
         if (res.data.length === 0) {
           axios.post('/checkout', ({name: this.state.name, email: this.state.email, password: this.state.password}))
-            .then((res) =>
-            console.log(res)
-            )
             .catch((err) => {
               console.log(err)
             });
-        } else {
+        } else if (res.data[0].password === this.state.password && res.data[0].name === this.state.name) {
           this.setState({
             email: res.data[0].email,
             password: res.data[0].password,

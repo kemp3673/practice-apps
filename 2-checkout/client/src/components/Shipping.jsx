@@ -9,27 +9,27 @@ import ReactDOM from 'react-dom';
             <h2>Shipping Address</h2>
 
             <h4>Street Address</h4>
-            <input type="text" placeholder="123 Sample St"  name="street"
+            <input type="text" placeholder= {props.props.street || "123 Sample St"}  name="street"
                 onChange={(event) => props.handleChange(event)}/>
 
             <h4>Apartment/Building Number</h4>
-            <input type="text" placeholder="Apt #" name="addLine2"
+            <input type="text" placeholder={props.props.addLine2 || "Apt #"} name="addLine2"
                 onChange={(event) => props.handleChange(event)}/>
 
             <h4>City</h4>
-            <input type="text" placeholder="Atlanta" name="city"
+            <input type="text" placeholder= {props.props.city || "Atlanta"} name="city"
                 onChange={(event) => props.handleChange(event)}/>
 
             <h4>State</h4>
-            <input type="text" placeholder="GA" name="state"
+            <input type="text" placeholder= {props.props.state || "GA"} name="state"
                 onChange={(event) => props.handleChange(event)}/>
 
             <h4>Zipcode</h4>
-            <input type="text" placeholder="30301" name="zipcode" maxLength = "5"
+            <input type="text" placeholder= {props.props.zipcode || "30301"} name="zipcode" maxLength = "5"
                 onChange={(event) => props.handleChange(event)}/>
 
             <h4>Phone Number</h4>
-            <input type="text" placeholder="1231231234" name="phone"
+            <input type="text" placeholder= {props.props.phone || "1231231234"} name="phone"
                 onChange={(event) => props.handleChange(event)}/>
 
             <br></br>

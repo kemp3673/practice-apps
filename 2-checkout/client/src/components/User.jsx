@@ -8,7 +8,7 @@ import ReactDOM from 'react-dom';
           <form>
 
             <h4>Name</h4>
-            <input type="text" name="name" placeholder="John Smith"
+            <input type="text" name="name" placeholder= "John Smith"
                 onChange={(event) => props.handleChange(event)}/>
 
             <h4>Email</h4>

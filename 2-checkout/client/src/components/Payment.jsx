@@ -9,19 +9,19 @@ import ReactDOM from 'react-dom';
              <h2>Payment Information</h2>
 
             <h4>Card Number</h4>
-            <input type="text"  placeholder="123456789" name="card"
+            <input type="text"  placeholder= {props.props.card || "123456789"} name="card"
                 onChange={(event) => props.handleChange(event)}/>
 
             <h4>Billing Zipcode</h4>
-            <input type="text" placeholder="30301" name="billingZipcode"
+            <input type="text" placeholder= {props.props.billingZipcode || "30301"} name="billingZipcode"
                 onChange={(event) => props.handleChange(event)}/>
 
             <h4>CVV</h4>
-            <input type="text" placeholder="123" name="cvv"
+            <input type="text" placeholder= {props.props.cvv || "123"} name="cvv"
                 onChange={(event) => props.handleChange(event)}/>
 
             <h4>Expiration Date</h4>
-            <input type="text" placeholder="2024-05-21" name="expDate"
+            <input type="text" placeholder= {props.props.expDate || "2024-05-21"} name="expDate"
                 onChange={(event) => props.handleChange(event)}/>
 
             <br></br>

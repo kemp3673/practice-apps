@@ -41,7 +41,7 @@ app.get("/checkout/:name", (req, res) => {
 // INSERT INTO db
 app.post("/checkout", (req, res) => {
   console.log(req.body);
-  db.create(req.body)
+  db.create(req.body, req.session_id)
     .then((response) => {
       res.send(response)
     })
